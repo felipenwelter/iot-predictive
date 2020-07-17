@@ -3,7 +3,7 @@ import sqlite3
 import settings
 from datetime import datetime
 
-IoTdb = 'IoT.db'
+IoTdb = 'server/IoT.db'
 settings.init() # Call only once
 
 

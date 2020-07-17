@@ -3,7 +3,7 @@ roll_offset = 0
 
 def init():
     global pitch_offset, roll_offset
-    file1 = open('simulation/settings.ini', 'rb')
+    file1 = open('server/simulation/settings.ini', 'rb')
     lines = file1.readlines()
     pitch_offset = float(lines[0].decode('ascii'))
     roll_offset = float(lines[1].decode('ascii'))
@@ -11,7 +11,7 @@ def init():
 
 def saveOffsets():
     global pitch_offset, roll_offset
-    file1 = open('simulation/settings.ini', 'w')
+    file1 = open('server/simulation/settings.ini', 'w')
     file1.write(str(pitch_offset) + "\n" + str(roll_offset) )
     file1.close()
 
