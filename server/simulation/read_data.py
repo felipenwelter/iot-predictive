@@ -2,8 +2,13 @@ import numpy as np
 import sqlite3
 import settings
 from datetime import datetime
+import os
 
-IoTdb = 'server/IoT.db'
+#IoTdb = 'server/IoT.db'
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+IoTdb = os.path.join(script_dir, "../IoT.db")
+IoTdb = os.path.abspath(os.path.realpath(IoTdb))
+
 settings.init() # Call only once
 
 

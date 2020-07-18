@@ -6,9 +6,15 @@
 #------------------------------------------
 
 import sqlite3
+import os
 
 # SQLite DB Name
-DB_Name =  "IoT.db"
+
+#DB_Name =  "IoT.db"
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+DB_Name = os.path.join(script_dir, "../IoT.db")
+DB_Name = os.path.abspath(os.path.realpath(DB_Name))
+
 
 # SQLite DB Table Schema
 TableSchema="""

@@ -7,9 +7,15 @@ from matplotlib.animation import FuncAnimation
 from random import randrange
 import read_data as rd
 import threading
+import os
 
-orig = 'IoT-long.db'
-dest =  'IoT.db'
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+orig = os.path.join(script_dir, '../examples/db/IoT-long.db')
+dest = os.path.join(script_dir, '../IoT.db')
+dest = os.path.abspath(os.path.realpath(dest))
+
+#orig = 'IoT-long.db'
+#dest =  'IoT.db'
 
 #simulate data getting from the IoT sensor
 def sensorReceive(offset):
@@ -50,7 +56,11 @@ def countRecords():
 
 def run():
     #first create the empty .db file
-    exec(open('initialize_DB_Tables.py').read())
+
+    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+    filename = os.path.join(script_dir, "../initialize_DB_Tables.py")
+    filename = os.path.abspath(os.path.realpath(filename))
+    exec(open(filename).read())
 
     # count records to keep-alive
     total = countRecords()
