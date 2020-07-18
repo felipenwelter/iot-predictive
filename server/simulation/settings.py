@@ -24,7 +24,7 @@ def saveOffsets():
     rel_path = "settings.ini"
     abs_file_path = os.path.join(script_dir, rel_path)
     #print(abs_file_path)
-    file1 = open(abs_file_path, 'rb')
+    file1 = open(abs_file_path, 'w')
 
     file1.write(str(pitch_offset) + "\n" + str(roll_offset) )
     file1.close()

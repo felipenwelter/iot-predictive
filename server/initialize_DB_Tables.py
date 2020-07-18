@@ -12,7 +12,7 @@ import os
 
 #DB_Name =  "IoT.db"
 script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-DB_Name = os.path.join(script_dir, "../IoT.db")
+DB_Name = os.path.join(script_dir, "IoT.db")
 DB_Name = os.path.abspath(os.path.realpath(DB_Name))
 
 

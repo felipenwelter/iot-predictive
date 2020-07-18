@@ -6,6 +6,7 @@
 #------------------------------------------
 import json
 import sqlite3
+import datetime
 
 # SQLite DB Name
 DB_Name =  "IoT.db"
@@ -44,17 +45,18 @@ def equipment_Temperature_Handler(jsonData):
 	dbObj = DatabaseManager()
 	dbObj.add_del_update_db_record("insert into equipment_temperature (SensorID, DateTime, Temperature) values (?,?,?)",[SensorID, DateTime, Temperature])
 	del dbObj
-	print ("Inserted Temperature Data into Database.")
-	print ("")
+	now = datetime.datetime.now()
+	print ("["+now.strftime("%H:%M:%S") + "] Inserted Temperature Data into Database.")
 
 # Function to save Vibration to DB Table
 def equipment_Vibration_Handler(jsonData):
+	info_count = 0
 	#Parse Data 
 	json_Dict = json.loads(jsonData)
 	SensorID = json_Dict['Sensor_ID']
 
 	for measure in json_Dict['measure']:
-
+		
 		DateTime = measure['Date']
 		Pitch = measure['Pitch']
 		Roll = measure['Roll']
@@ -63,8 +65,12 @@ def equipment_Vibration_Handler(jsonData):
 		dbObj = DatabaseManager()
 		dbObj.add_del_update_db_record("insert into equipment_vibration (SensorID, DateTime, Pitch, Roll) values (?,?,?,?)",[SensorID, DateTime, Pitch, Roll])
 		del dbObj
-		print ("Inserted Vibration Data into Database.")
-		print ("")
+		info_count += 1
+
+	if (info_count > 0):
+		now = datetime.datetime.now()
+		print ("["+now.strftime("%H:%M:%S") + "] Inserted Vibration Data into Database.")
+	
 
 #===============================================================
 # Master Function to Select DB Funtion based on MQTT Topic

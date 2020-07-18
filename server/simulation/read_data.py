@@ -21,7 +21,7 @@ def setOffsets():
     conn = sqlite3.connect(IoTdb)
     cursor = conn.cursor()
 
-    print("setting offsets!!!!!")
+    print("# reseted offsets")
 
     if isEmpty(cursor,'equipment_vibration') == False:
         
@@ -161,7 +161,7 @@ def getPitchRollSum():
     return pitch_roll
 
 
-def getSecondsDiff():
+def getSecondsDiff(limit=200):
     result = 0
     conn = sqlite3.connect(IoTdb)
     cursor = conn.cursor()
@@ -169,16 +169,17 @@ def getSecondsDiff():
     if isEmpty(cursor,'equipment_vibration') == False:
     
         # lendo os dados
-        cursor.execute("SELECT DateTime FROM equipment_vibration order by id asc;")
-        result1 = cursor.fetchone()
+        cursor.execute("SELECT DateTime FROM equipment_vibration order by id desc LIMIT "+str(limit)+";")
+        result = cursor.fetchall()
         
-        result1 = datetime.strptime(result1[0].strip(),'%d-%b-%Y %H:%M:%S.%f')
+        result1 = datetime.strptime(result[limit-1][0].strip(),'%d-%b-%Y %H:%M:%S.%f')
+        result2 = datetime.strptime(result[0][0].strip(),'%d-%b-%Y %H:%M:%S.%f')
         
         # lendo os dados
-        cursor.execute("SELECT DateTime FROM equipment_vibration order by id desc;")
+        #cursor.execute("SELECT DateTime FROM equipment_vibration order by id desc LIMIT "+str(limit)+";")
 
-        result2 = cursor.fetchone()
-        result2 = datetime.strptime(result2[0].strip(),'%d-%b-%Y %H:%M:%S.%f')
+        #result2 = cursor.fetchone()
+        #result2 = datetime.strptime(result2[0].strip(),'%d-%b-%Y %H:%M:%S.%f')
 
         result = (result2 - result1).seconds
 

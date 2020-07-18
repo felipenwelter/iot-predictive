@@ -108,11 +108,11 @@ def update(frame):
             p = pr
     #----------------------
     n = p.size
-    tx = rd.getSecondsDiff()
+    tx = rd.getSecondsDiff(n)
     t = np.linspace(0,tx,n)
 
     n2 = p_hist.size
-    tx_hist = rd.getSecondsDiff()
+    tx_hist = rd.getSecondsDiff(n2)
     t_hist = np.linspace(0,tx,n2)
 
     sma = cl.calcSMA(p)
