@@ -36,7 +36,7 @@ for label in axes[1].get_xticklabels():
     label.set_visible(False)
 
 axes[0].set_ylabel('Recent')
-axes[1].set_ylabel('History')
+axes[1].set_ylabel('Historic')
 
 
 pLine, = axes[0].plot(t,p,color='c',LineWidth=1.5,label='Pitch',)
@@ -47,8 +47,8 @@ ewmaLine, = axes[0].plot([],[],color='#e4239d',LineWidth=0.5)
 #maxLine, = pyplot.plot( [], [],color='r',LineWidth=0.2)
 #minLine, = pyplot.plot( [], [],color='r',LineWidth=0.2)
 lineStopped_max, = axes[0].plot( [], [],color='#ff9933',LineWidth=0.2)
-lineStopped_min, = axes[0].plot( [], [],color='#ff9933',LineWidth=0.2)
-lineOperating_min, = axes[0].plot( [], [],color='#ff0000',LineWidth=0.2)
+#lineStopped_min, = axes[0].plot( [], [],color='#ff9933',LineWidth=0.2)
+#lineOperating_min, = axes[0].plot( [], [],color='#ff0000',LineWidth=0.2)
 lineOperating_max, = axes[0].plot( [], [],color='#ff0000',LineWidth=0.2)
 symbol_operating, = axes[0].plot([],[],'go',alpha=0.4)
 symbol_alert, = axes[0].plot([],[],'r*',alpha=0.4)
@@ -135,9 +135,9 @@ def update(frame):
     pLine.set_data(t, p)
     smaLine.set_data(t,sma)
     #ewmaLine.set_data(t,ewma)
-    lineStopped_min.set_data([t[0],tx], [range_stopped[0],range_stopped[0]])
+    #lineStopped_min.set_data([t[0],tx], [range_stopped[0],range_stopped[0]])
     lineStopped_max.set_data([t[0],tx], [range_stopped[1],range_stopped[1]])
-    lineOperating_min.set_data([t[0],tx], [range_operating[0][0],range_operating[0][0]])
+    #lineOperating_min.set_data([t[0],tx], [range_operating[0][0],range_operating[0][0]])
     lineOperating_max.set_data([t[0],tx], [range_operating[1][1],range_operating[1][1]])
 
 
