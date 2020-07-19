@@ -43,50 +43,68 @@ Conforme o desenho, o microcontrolador se conecta ao sensor pela interface I2C, 
 - **simulate.py** complementar, simula o processo de gravação das leituras em banco de dados em blocos de 10, da mesma forma que é feito pelo broker MQTT quando o ESP está ativo. Deve ser acionado por uma thread no arquivo *main.py*.
 
 
+## Instruções
 
 
+### Pré-requisitos
 
-
-
-# iot-predictive
-IoT project using ESP32 + MPU6050 for vibration monitoring
-
-
-### To install Mosquitto (MAC):
+- Instalar Mosquitto (MacOS):
+```
 brew install mosquitto
-/usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
+```
 
+- Instalar paho-mqtt localmente
+```
+pip3 install paho–mqtt
+```
+
+- Instalar Python3 com bibliotecas numpy, sqlite3, pandas, matplotlib, paho, json, threading
+
+- Instalar IDE Arduino ou similar para compilar para o ESP32
+
+
+### Configurações
+
+- Alterar referências ao endereço IP do broker MQTT
+- Alterar referências a rede Wifi (ssid, user, password)
+
+
+### Executar
+
+- Executar Mosquitto (MacOS)
+```
+/usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
+```
+
+- Executar script para realizar recebimento de dados MQTT e 
+```
+python3 mqtt_Listen_Sensor_Data.py 
+```
+
+- Iniciar server:
+```
+python3 main.py
+```
+
+
+### Complementar
+
+- Acessar dados via SQLite:
+```
+sqlite3 IoT.db
+```
+
+- Simular Mosquitto pub e sub:
+```
 mosquitto_pub -t xpto/temperature -m 22
 mosquitto_sub -h 192.168.0.25 -p 1883 -v -t 'xpto/temperature'
-
-brew install libwebsockets (to use websockets on webpage)
-
-
-## To install paho-mqtt locally
-pip3 install paho–mqtt
-
-### To install Arduino:
-
-## To run node.js server
-node index.js at folder named http/server
+```
 
 
-Dummy:
-(at correct folder) >> python3 initialize_DB_Tables.py
-one terminal to publish dummy: python3 mqtt_Publish_Dummy_Data.py 
-one terminal to read dummy: python3 mqtt_Listen_Sensor_Data.py
-with mosquitto running on the backgroud
+## Referências:
 
+[Kalman Filter](https://github.com/TKJElectronics/KalmanFilter) - TKJElectronics
 
-Open database: >> sqlite3 IoT.db
+[Enviar e receber dados via MQTT](http://newtoncbraga.com.br/index.php/microcontrolador/143-tecnologia/17070-enviando-e-recebendo-dados-via-mqtt-com-o-esp32-mic373) - Newton C Braga
 
-
-
-
-Referências:
-
-Kalman Filter: https://github.com/TKJElectronics/KalmanFilter
-
-MQTT - http://newtoncbraga.com.br/index.php/microcontrolador/143-tecnologia/17070-enviando-e-recebendo-dados-via-mqtt-com-o-esp32-mic373
-
-MQTT read and store data - Reference: https://iotbytes.wordpress.com/store-mqtt-data-from-sensors-into-sql-database/
+[MQTT read and store data](https://iotbytes.wordpress.com/store-mqtt-data-from-sensors-into-sql-database) - IOTBytes, Pradeep Singh
