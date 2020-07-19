@@ -12,11 +12,21 @@ IoTdb = os.path.abspath(os.path.realpath(IoTdb))
 settings.init() # Call only once
 
 
+#-----------------------------------------------
+# Função: Verifica se há registros na tabela
+# Parâmetros: cursor - objeto de conexão ao BD
+#             table - tabela a verificar
+# Retorno: true para o caso de haver registros
+#-----------------------------------------------
 def isEmpty(cursor, table):
     cursor.execute("SELECT count(*) FROM "+table+";")
     return ( cursor.fetchone()[0] == 0)
 
 
+#-----------------------------------------------------------------------------
+# Função: Redefine os offsets com base nas informações mais atuais da tabela
+# Retorno: null
+#-----------------------------------------------------------------------------
 def setOffsets():
     conn = sqlite3.connect(IoTdb)
     cursor = conn.cursor()
@@ -37,8 +47,12 @@ def setOffsets():
     conn.close()
 
     return
+    
 
-
+#-------------------------------------------------------------------
+# Função: Busca os offsets armazenados, e se não houver, os define
+# Retorno: array no formato (pitch,roll)
+#-------------------------------------------------------------------
 def getOffsets():
 
     # se offsets ja foram calculados, retorna valores salvos
@@ -48,7 +62,16 @@ def getOffsets():
     return (settings.pitch_offset, settings.roll_offset)
 
 
-#set type as 1 for Pitch, 2 for Roll and 3 for Pitch and Roll calculation
+#---------------------------------------------------------------
+# Função: Busca as leituras armazenadas de pitch e roll
+# Parâmetros: type - define o que deseja obter (def: 0), sendo:
+#                    0: pitch, roll, pitch+roll
+#                    1: pitch
+#                    2: roll
+#                    3: pitch + roll
+#             limit - número de registros para busca (def: 200)
+# Retorno: array (np) com as informações armazenadas
+#---------------------------------------------------------------
 def getAllData(type=0, limit=200):
     result_array = np.array([])
     conn = sqlite3.connect(IoTdb)
@@ -81,86 +104,11 @@ def getAllData(type=0, limit=200):
     return result_array
 
 
-def getPitchData():
-    pitch_array = np.array([])
-    conn = sqlite3.connect(IoTdb)
-    cursor = conn.cursor()
-
-    if isEmpty(cursor,'equipment_vibration') == False:
-
-        # calcula a média para utilizar como offset (levando os valores a zero)
-        cursor.execute("SELECT AVG(Pitch) FROM ( SELECT Pitch FROM equipment_vibration LIMIT 10);")
-        offset = cursor.fetchone()[0]
-
-        cursor.execute("SELECT Pitch - "+str(offset)+" FROM equipment_vibration;")
-
-        result = list(cursor.fetchall())
-        result2 = [float(i[0]) for i in result]
-        pitch_array = np.array(result2)
-
-    conn.close()
-
-    return pitch_array
-
-
-def getRollData():
-    roll_array = np.array([])
-    conn = sqlite3.connect(IoTdb)
-    cursor = conn.cursor()
-
-    if isEmpty(cursor,'equipment_vibration') == False:
-
-        # calcula a média para utilizar como offset (levando os valores a zero)
-        cursor.execute("SELECT AVG(Roll) FROM ( SELECT Roll FROM equipment_vibration LIMIT 10);")
-        offset = cursor.fetchone()[0]
-        
-        cursor.execute("SELECT Roll - "+str(offset)+" FROM equipment_vibration;")
-
-        result = list(cursor.fetchall())
-        result2 = [float(i[0]) for i in result]
-        roll_array = np.array(result2)
-
-    conn.close()
-
-    return roll_array
-
-
-def getPitchRollSum():
-    pitch_roll = np.array([])
-    conn = sqlite3.connect(IoTdb)
-    cursor = conn.cursor()
-
-    if isEmpty(cursor,'equipment_vibration') == False:
-    
-        # calcula a média para utilizar como offset (levando os valores a zero)
-        cursor.execute("SELECT AVG(Pitch), AVG(Roll) FROM ( SELECT Pitch, Roll FROM equipment_vibration LIMIT 10);")
-        offset = cursor.fetchone()
-
-        #cursor.execute("SELECT abs(Pitch), abs(Roll), (abs(Pitch) + abs(Roll)) * 2 "
-        #       "FROM equipment_vibration;")
-
-        query = "SELECT ( abs(Pitch - ("+str(offset[0])+")) + abs(Roll - ("+str(offset[1])+")) ) * 2 "
-        query += "FROM equipment_vibration;"
-        cursor.execute(query)
-
-
-        result = list(cursor.fetchall())
-        result2 = [float(i[0]) for i in result]
-        pitch_roll = np.array(result2)
-
-
-        #x2 = getAllData(3)
-        
-        #comparison = pitch_roll == x2
-        #equal_arrays = comparison.all()
-        #print(equal_arrays)
-
-
-    conn.close()
-
-    return pitch_roll
-
-
+#-------------------------------------------------------------------------------
+# Função: Retorna a diferença de tempo entre duas leituras
+# Parâmetros: limit - número de registros para busca (def: 200)
+# Retorno: a diferença, em segundos, da primeira e última leitura do intervalo
+#-------------------------------------------------------------------------------
 def getSecondsDiff(limit=200):
     result = 0
     conn = sqlite3.connect(IoTdb)
@@ -186,9 +134,3 @@ def getSecondsDiff(limit=200):
     conn.close()
 
     return result
-
-
-#p = getPitchData()
-#r = getRollData()
-#m = getPitchRollSum()
-#s = getSecondsDiff()

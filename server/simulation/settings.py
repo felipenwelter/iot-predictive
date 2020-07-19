@@ -3,6 +3,9 @@ import os
 pitch_offset = 0
 roll_offset = 0
 
+#-----------------------------------------------------------------------
+# Função: Inicializa arquivo settings.ini e variáveis globais de offset
+#-----------------------------------------------------------------------
 def init():
     global pitch_offset, roll_offset
     
@@ -17,6 +20,10 @@ def init():
     roll_offset = float(lines[1].decode('ascii'))
     file1.close()
 
+
+#-----------------------------------------------------------------------
+# Função: Armazena offsets atuais no arquivo settings.ini
+#-----------------------------------------------------------------------
 def saveOffsets():
     global pitch_offset, roll_offset
     
@@ -28,5 +35,7 @@ def saveOffsets():
 
     file1.write(str(pitch_offset) + "\n" + str(roll_offset) )
     file1.close()
+
+
 
 init()

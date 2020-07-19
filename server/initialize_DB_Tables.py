@@ -3,6 +3,7 @@
 # Date: 11th June 2020
 # Version: 1.0
 # Python Ver: 3.0
+# Reference: https://iotbytes.wordpress.com/store-mqtt-data-from-sensors-into-sql-database/
 #------------------------------------------
 
 import sqlite3

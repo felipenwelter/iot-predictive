@@ -3,6 +3,7 @@
 # Date: 11th June 2020
 # Version: 1.0
 # Python Ver: 3.0
+# Reference: https://iotbytes.wordpress.com/store-mqtt-data-from-sensors-into-sql-database/
 #------------------------------------------
 
 import paho.mqtt.client as mqtt
@@ -26,7 +27,6 @@ def on_message(mqtt_client, obj, msg):
 	#print ("MQTT Topic: " + msg.topic)  
 	#print ("Data: " + msg.payload.decode('utf-8'))
 	sensor_Data_Handler(msg.topic, msg.payload)
-	#mqttc.publish("equipment/actions", '{"action":"configure"}')
 
 
 def on_subscribe(mqtt_client, obj, mid, granted_qos):
