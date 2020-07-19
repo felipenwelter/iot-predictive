@@ -1,4 +1,4 @@
-# Monitoramento da vibração de equipamentospara manutenção preditiva usando IoT
+# Monitoramento da vibração de equipamentos para manutenção preditiva usando IoT
 
 ## Arquitetura do hardware
 
@@ -12,15 +12,15 @@ Conforme o desenho, o microcontrolador se conecta ao sensor pela interface I2C, 
 
 ## Arquivos (hardware)
 
-- sensorize.ino: arquivo principal que realiza os seguintes procedimentos:
-    - Conexão com wifi local (_init_wifi / connect_wifi / verify_wifi_connection_)
-    - Conexão npt server para sincronizar relógio
-    - Conexão com broker MQTT para publicação e recebimento de mensagens (_init_MQTT - define configurações para conexão com broker MQTT; connect_MQTT - conecta com broker MQTT e subscreve ao topic "equipment/actions" em mqtt_callback_)
-    - Acionamento de LED's ( mqtt_callback - recebe JSON com as informações necessárias)
-    - Leitura e envio de dados de vibração (função _loop_ realiza a leitura, acumula e empacota JSON para publicar em "equipment/vibration")
+- **sensorize.ino** - arquivo principal que realiza os seguintes procedimentos:
+    - **Conexão com wifi local** (_init_wifi / connect_wifi / verify_wifi_connection_);
+    - **Conexão npt server** para sincronizar relógio;
+    - **Conexão com broker MQTT** para publicação e recebimento de mensagens (_init_MQTT - define configurações para conexão com broker MQTT; connect_MQTT - conecta com broker MQTT e subscreve ao topic "equipment/actions" em mqtt_callback_);
+    - **Acionamento de LED's** ( mqtt_callback - recebe JSON com as informações necessárias);
+    - **Leitura e envio de dados de vibração** (função _loop_ realiza a leitura, acumula e empacota JSON para publicar em "equipment/vibration");
     - Configurações gerais e função de controle _setup_.
 
-- I2C.ino: arquivo complementar, realiza a leitura e gravação de registradores, extraindo as informações dos eixos pitch e roll.
+- **I2C.ino** - arquivo complementar, realiza a leitura e gravação de registradores, extraindo as informações dos eixos pitch e roll.
 
 
 
@@ -60,3 +60,10 @@ with mosquitto running on the backgroud
 Open database: >> sqlite3 IoT.db
 
 
+
+
+Referências:
+
+Kalman Filter: https://github.com/TKJElectronics/KalmanFilter
+
+MQTT - http://newtoncbraga.com.br/index.php/microcontrolador/143-tecnologia/17070-enviando-e-recebendo-dados-via-mqtt-com-o-esp32-mic373
