@@ -27,9 +27,9 @@
 /*------------------------------------------*/
 
 /*Variáveis globais do Wi-Fi e MQTT*/
-const char* ssid_wifi = "2.4 IVANILDE";  //"Felipe";
-const char* password_wifi = "07021622";
-const char* broker_mqtt = "192.168.0.25"; //endereço do broker MQTT
+const char* ssid_wifi = "ssid_wifi";  //"Felipe";
+const char* password_wifi = "password";
+const char* broker_mqtt = "ip_broker"; //endereço do broker MQTT
 int broker_port = 1883; //porta para o broker MQTT
 
 WiFiClient espClient;     //objeto para conexao com internet
